@@ -2,15 +2,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import time as time
-import plot
+import plot_wf
 
-print plot.metropolis_hastings.__doc__
+print plot_wf.metropolis_hastings.__doc__
 
 t = time.time()
 
 X = np.array([range(25),]*25)
 Y = np.array([range(25),]*25).transpose()
-bucket = plot.metropolis_hastings()
+bucket = plot_wf.metropolis_hastings()
 
 print time.time() - t
 

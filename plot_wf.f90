@@ -79,6 +79,6 @@ SUBROUTINE init_rnd()
 
     ! intialize random generator with seed
     allocate(seed(seedSize))
-    CALL RANDOM_SEED(PUT=dtVals((9-seedSize):8))
+    CALL random_seed(PUT=dtVals((9-seedSize):8))
 
 END SUBROUTINE init_rnd
