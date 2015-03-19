@@ -36,8 +36,8 @@ SUBROUTINE metropolis_hastings(bucket)
 
         ! calculate the fraction of the new wavefunction divided by the old
         ! one
-        r12n = sum((r1n-r2n)**2)*0.5
-        r12 = sum((r1-r2)**2)*0.5
+        r12n = sum((r1n-r2n)**2)**0.5
+        r12 = sum((r1-r2)**2)**0.5
         p_r1 =  exp(-sum((r1n+s)**2)**0.5)+exp(-sum((r1n-s)**2)**0.5)/ &	! factor due to electron 1
                 exp(-sum((r1+s)**2)**0.5)+exp(-sum((r1-s)**2)**0.5)
         p_r2 =  exp(-sum((r2n+s)**2)**0.5)+exp(-sum((r2n-s)**2)**0.5)/ &	! factor due to electron 2
