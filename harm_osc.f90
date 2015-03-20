@@ -1,26 +1,27 @@
 ! a:                
 ! parameter in the proposed wave function phi = sqrt(a/PI)*exp(-a*x^2)
 !
-! local_energy:     
+! energy:     
 ! the local energy calculated with parameter a using metrop-hast.
-SUBROUTINE metropolis_hastings(a, local_energy)
+SUBROUTINE metropolis_hastings(a, energy)
 
     implicit none
-    integer, intent (out) :: local_energy
-    integer :: i
+    real(8), intent (out) :: energy
     real(8), intent (in) :: a
+    
+    integer :: i
     real(8) :: x, xn, phi_old, phi_new, p, PI
     real(8) :: rnd(1:2)
     
     CALL init_rnd()
     PI = 4*atan(1d+0)
-    
-    ! loop big amount of times to obtain equilibrium
-    DO i=1,5000000
+    ! loop to obtain equilibrium
+    x = -10
+    energy = 0
+    DO i=1,5000
         CALL random_number(rnd)
         
-        ! update x with a random step
-        x = -5
+        ! update x with a random step (x initially -10 to see if we go to equilibrium)
         xn = x + 0.5*rnd(1)
         
         ! calculate the wave function squared for the old and new value for x
@@ -37,12 +38,11 @@ SUBROUTINE metropolis_hastings(a, local_energy)
         
     END DO
     
-    ! loop 1000 times to average local energy
-    DO i=1,1000
+    ! loop 5000 times to calculate the integral
+    DO i=1,100000
         CALL random_number(rnd)
         
         ! update x with a random step
-        x = -5
         xn = x + 0.5*rnd(1)
         
         ! calculate the wave function squared for the old and new value for x
@@ -56,11 +56,12 @@ SUBROUTINE metropolis_hastings(a, local_energy)
         IF (p > rnd(2)) THEN
             x = xn
         END IF
-        ! ???????????????????????????????????????
-        local_energy = local_energy + 3
-        ! ???????????????????????????????????????
+        
+        ! calculate the energy using the metropolis-hastings generated points
+        ! and the local energy
+        energy = energy + (a + (0.5 - 2*a**2)*x**2)/100000
     END DO
-
+    print *, energy
 END SUBROUTINE metropolis_hastings
 
 ! subroutine for initializing the random value generator
