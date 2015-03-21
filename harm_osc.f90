@@ -11,7 +11,7 @@ SUBROUTINE metropolis_hastings(a, energy)
     
     integer :: i
     real(8) :: x, xn, phi_old, phi_new, p, PI
-    real(8) :: rnd(1:2)
+    real(8) :: rnd(1:3)
     
     CALL init_rnd()
     PI = 4*atan(1d+0)
@@ -21,8 +21,8 @@ SUBROUTINE metropolis_hastings(a, energy)
     DO i=1,5000
         CALL random_number(rnd)
         
-        ! update x with a random step (x initially -10 to see if we go to equilibrium)
-        xn = x + 0.5*rnd(1)
+        ! update x with a normally distributed random step
+        xn = x + sqrt(-2*log(rnd(1)))*sin(2*PI*rnd(2))
         
         ! calculate the wave function squared for the old and new value for x
         phi_old = sqrt(a/PI)*exp(-a*x**2)
@@ -32,7 +32,7 @@ SUBROUTINE metropolis_hastings(a, energy)
         p = (phi_new/phi_old)**2
         
         ! make the step if p > 1 or p > random number
-        IF (p > rnd(2)) THEN
+        IF (p > rnd(3)) THEN
             x = xn
         END IF
         
@@ -42,8 +42,8 @@ SUBROUTINE metropolis_hastings(a, energy)
     DO i=1,100000
         CALL random_number(rnd)
         
-        ! update x with a random step
-        xn = x + 0.5*rnd(1)
+        ! update x with a normally distributed random step
+        xn = x + sqrt(-2*log(rnd(1)))*sin(2*PI*rnd(2))
         
         ! calculate the wave function squared for the old and new value for x
         phi_old = sqrt(a/PI)*exp(-a*x**2)
@@ -53,7 +53,7 @@ SUBROUTINE metropolis_hastings(a, energy)
         p = (phi_new/phi_old)**2
         
         ! make the step if p > 1 or p > random number
-        IF (p > rnd(2)) THEN
+        IF (p > rnd(3)) THEN
             x = xn
         END IF
         
@@ -61,7 +61,6 @@ SUBROUTINE metropolis_hastings(a, energy)
         ! and the local energy
         energy = energy + (a + (0.5 - 2*a**2)*x**2)/100000
     END DO
-    print *, energy
 END SUBROUTINE metropolis_hastings
 
 ! subroutine for initializing the random value generator
