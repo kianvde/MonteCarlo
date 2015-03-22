@@ -38,7 +38,7 @@ SUBROUTINE metropolis_hastings(a, energy)
         
     END DO
     
-    ! loop 5000 times to calculate the integral
+    ! calculate the integral
     DO i=1,100000
         CALL random_number(rnd)
         
