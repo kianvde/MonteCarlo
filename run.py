@@ -1,34 +1,23 @@
-# calculate the energy for the hydrogen molecule using
-# the metropolis hastings algorithm
-
-import time as time
 import h2_mh
 import numpy as np
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 
-# parameter 1 (s): is the separation between the protons
-# parameter 2 (a): is a trial wave function parameter
-#                  following from a*(1+exp(-s/a))=1
-# parameter 3 (beta): is a trial wave function parameter
+# print the h2_mh documentation
+h2_mh_file = open('h2_mh.f90', 'r')
+for line in h2_mh_file:
+    if (line[0] != '!'):
+        break
+    print line,
+
 beta = 1.0
-
 for i in range(5):
-    energy, descent = h2_mh.metropolis_hastings(2.0, 0.90182909, beta)
+    r = 4.0*np.random.rand(6)-2.0
+    h2_mh.init_rnd()
+    energy, descent, r = h2_mh.metropolis_hastings(r, [2.0, 0.90182909, beta], 1.0, 5000, False)
+    energy, descent, r = h2_mh.metropolis_hastings(r, [2.0, 0.90182909, beta], 1.0, 10000000, True)
     beta -= 10*descent
+
     print "energy: "
     print energy
     print "beta: "
     print beta
 
-# plt.figure()
-# plt.plot(energy)
-# plt.show()
-
-# plot
-# X = np.array([np.linspace(-2,2,50),]*50)
-# Y = np.array([np.linspace(-2,2,50),]*50).transpose()
-# fig = plt.figure()
-# ax = fig.add_subplot(111, projection='3d')
-# ax.plot_wireframe(X, Y, plot_bin)
-# plt.show()
