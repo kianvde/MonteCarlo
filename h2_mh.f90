@@ -1,19 +1,18 @@
 
-SUBROUTINE metropolis_hastings(s, a, b, num_bins, energy, plot_bin)
+SUBROUTINE metropolis_hastings(s, a, b, energy, descent)
     implicit none
 
     real(8), intent(in) :: s, a, b
-    integer, intent(in) :: num_bins
-    real(8), intent(out) :: energy
-    integer(8), intent(out) :: plot_bin(num_bins,num_bins)
+    real(8), intent(out) :: energy, descent
     
-    integer :: i, bi_x, bi_y, N
+    integer :: i, N
     real(8) :: r1(0:2), r2(0:2), r1n(0:2), r2n(0:2), t(0:2), temp(0:2)
     real(8) :: rnd(1:7)
     real(8) :: PI, p
     
     real(8) :: r1L, r1R, r2L, r2R, r12, r12n, p1L, p1R, p2L, p2R, p12
     real(8) :: r1Lu(0:2), r1Ru(0:2), r2Lu(0:2), r2Ru(0:2), r12u(0:2)
+    real(8) :: sd_A, sd_A_avg, sd_AE_avg, local_energy
     
     ! useful constants
     t  = (/ s/2, 0d+0, 0d+0 /)
@@ -24,6 +23,8 @@ SUBROUTINE metropolis_hastings(s, a, b, num_bins, energy, plot_bin)
     
     ! randomly initialize r1 and r2
     ! with uniform distribution between -s and s
+    r1 = 0
+    r2 = 0
     CALL random_number(r1)
     CALL random_number(r2)
     r1 = 2*s*r1-s
@@ -33,6 +34,7 @@ SUBROUTINE metropolis_hastings(s, a, b, num_bins, energy, plot_bin)
     DO i=1,5000
 
         ! generate an array of random numbers for proposing update for r1 and r2
+        rnd = 0
         CALL random_number(rnd)
 
         ! propose update for r1 and r2 according to a step with uniform 
@@ -68,6 +70,7 @@ SUBROUTINE metropolis_hastings(s, a, b, num_bins, energy, plot_bin)
     
     ! calculate the integral
     N = 10000000
+    energy = 0
     DO i=1,N
 
         ! generate an array of random numbers for proposing update for r1 and r2
@@ -76,8 +79,8 @@ SUBROUTINE metropolis_hastings(s, a, b, num_bins, energy, plot_bin)
 
         ! propose update for r1 and r2 according to a step with uniform 
         ! random angles (phi, theta) and normal distributed radial 
-        ! step size (R) with standard deviation s/2
-        r1n = r1 + (s/2)*sqrt(-2*log(rnd(1)))*cos(2*PI*rnd(2))* & 	! 1+R*
+        ! step size (R) with standard deviation s/4
+        r1n = r1 + (s/4)*sqrt(-2*log(rnd(1)))*cos(2*PI*rnd(2))* & 	! 1+R*
             (/  sin(PI*rnd(3))*cos(2*PI*rnd(4)), &                  ! (sin(theta)cos(phi),
                 sin(PI*rnd(3))*sin(2*PI*rnd(4)), &                  !  sin(theta)sin(phi),
                 cos(PI*rnd(3)) /)                                   !  cos(theta))
@@ -114,28 +117,29 @@ SUBROUTINE metropolis_hastings(s, a, b, num_bins, energy, plot_bin)
         
         ! calculate the local energy
         temp = (p1L*r1Lu+p1R*r1Ru)/(p1L+p1R) - (p2L*r2Lu+p2R*r2Ru)/(p2L+p2R)
-        energy = energy - 1/(a**2) + (p1L/r1L + p1R/r1R)/(a*(p1L+p1R)) + &
+        local_energy = - 1/(a**2) + (p1L/r1L + p1R/r1R)/(a*(p1L+p1R)) + &
             (p2L/r2L + p2R/r2R)/(a*(p2L+p2R)) & 
             - 1/r1L - 1/r1R - 1/r2L - 1/r2R + 1/r12 + &
             dot_product(temp, r12u/(2*a*(1+b*r12)**2)) &
             - ((4*b+1)*r12+4)/((4*(1+b*r12)**4)*r12)
+        energy = energy + local_energy
+            
+        ! calculate terms for steepest descent method
+        sd_A = -r12**2/(2*(1+b*r12)**2)
+        sd_A_avg = sd_A_avg + sd_A
+        sd_AE_avg = sd_AE_avg + sd_A*local_energy
 
         ! update r1 and r2 according to metropolis hastings algorithm
         IF (p**2 > rnd(7)) THEN
             r1 = r1n
             r2 = r2n
         END IF
-        
-        ! bin the values for plotting
-        bi_x = int(num_bins*(r2(0)+s)/(2*s))
-        bi_y = int(num_bins*(r2(1)+s)/(2*s))
-        IF (((bi_x >=0 ) .and. (bi_x < 50)) .and. &
-            ((bi_y >=0 ) .and. (bi_y < 50)) .and. &
-             abs(r2(2)) < s/num_bins)  THEN
-            plot_bin(bi_x,bi_y) = plot_bin(bi_x,bi_y) + 1
-        END IF
+            
     END DO
     energy = energy/N
+    
+    ! calculate descent for beta update
+    descent = (2d+0/N)*(sd_AE_avg - energy*sd_A_avg)
     
 END SUBROUTINE metropolis_hastings
 
