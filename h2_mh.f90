@@ -87,19 +87,18 @@ SUBROUTINE metropolis_hastings(r_in, problem_parameters, sigma, N, compute, ener
         r2Lu = (r2+t)/r2L(1)
         r2Ru = (r2-t)/r2R(1)
         r12u = (r1-r2)/r12(1)
-        p1L = (/ exp(-r1L(1)/a), exp(-r1L(2)/a) /)
-        p1R = (/ exp(-r1R(1)/a), exp(-r1R(2)/a) /)
-        p2L = (/ exp(-r2L(1)/a), exp(-r2L(2)/a) /)
-        p2R = (/ exp(-r2R(1)/a), exp(-r2R(2)/a) /)
-        p12 = (/ exp(r12(1)/(2+2*b*r12(1))), exp(r12(2)/(2+2*b*r12(2))) /)
+        p1L = exp(-r1L/a)
+        p1R = exp(-r1R/a)
+        p2L = exp(-r2L/a)
+        p2R = exp(-r2R/a)
+        p12 = exp(r12/(2+2*b*r12))
+        ! p12 = (/ exp(r12(1)/(2+2*b*r12(1))), exp(r12(2)/(2+2*b*r12(2))) /)
         
         ! calculate the fraction of the new wave function divided by the old
         ! one
-        p = ((exp(-sum((r1n+t)**2)**0.5/a) + exp(-sum((r1n-t)**2)**0.5/a))/ &   ! factor due to electron 1
-            (p1L(1) + p1R(1)))* &
-            ((exp(-sum((r2n+t)**2)**0.5/a) + exp(-sum((r2n-t)**2)**0.5/a))/ &   ! factor due to electron 2
-            (p2L(1) + p2R(1)))* &
-            (exp(r12(2)/(2+2*b*r12(2))) / p12(1))                                      ! interaction factor
+        p = ((p1L(2) + p1R(2))/(p1L(1) + p1R(1)))* &    ! factor due to electron 1
+            ((p2L(2) + p2R(2))/(p2L(1) + p2R(1)))* &    ! factor due to electron 2
+            (p12(2) / p12(1))		                    ! interaction factor
         
         IF (compute) THEN
 
@@ -107,10 +106,10 @@ SUBROUTINE metropolis_hastings(r_in, problem_parameters, sigma, N, compute, ener
             temp = (p1L(1)*r1Lu+p1R(1)*r1Ru)/(p1L(1)+p1R(1)) - (p2L(1)*r2Lu+p2R(1)*r2Ru)/(p2L(1)+p2R(1))
             
             local_energy = - 1/(a**2) + (p1L(1)/r1L(1) + p1R(1)/r1R(1))/(a*(p1L(1)+p1R(1))) + &
-                (p2L(1)/r2L(1) + p2R(1)/r2R(1))/(a*(p2L(1)+p2R(1))) & 
+                (p2L(1)/r2L(1) + p2R(1)/r2R(1))/(a*(p2L(1)+p2R(1))) &
                 - 1/r1L(1) - 1/r1R(1) - 1/r2L(1) - 1/r2R(1) + 1/r12(1) + &
                 dot_product(temp, r12u/(2*a*(1+b*r12(1))**2)) &
-                - ((4*b+1)*r12(1)+4)/((4*(1+b*r12(1))**4)*r12(1))
+                - ((4*b+1)*r12(1)+4)/((4*(1+b*r12(1))**4)*r12(1)) + 1/s
             energy = energy + local_energy
   
             ! calculate terms for steepest descent method
