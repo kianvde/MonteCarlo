@@ -1,38 +1,46 @@
 import h2_mh
 import numpy as np
+from scipy.optimize import curve_fit
 import helper
 import matplotlib.pyplot as plt
 
-# # print the h2_mh documentation
-# h2_mh_file = open('h2_mh.f90', 'r')
-# for line in h2_mh_file:
-#     if (line[0] != '!'):
-#         break
-#     print line,
+# problem parameters
+beta = 0.7
+sigma = 0.2
+s = np.linspace(1,2,50)
 
-s_vector = np.linspace(1,2,20)
-energy = np.zeros(np.size(s_vector))
-for i, s in enumerate(s_vector):
-    # problem parameters
-    beta = 0.7
-    sigma = 0.2
+energy = np.zeros(np.size(s))
+for i,s_i in enumerate(s):
 
-    a = helper.find_a(s)
-    parameters = [s, a, beta]
+    # find a from a*(1-e(-s/a)) = 1 using the Newton Rhapson method
+    a = helper.find_a(s_i)
+    parameters = [s_i, a, beta]
 
     # initialize fortran random value generator and r
     h2_mh.init_rnd()
-    r = 4.0*np.random.rand(6)-2.0
+    r = 4.0*np.random.rand(6) - 2.0
 
-    # get mh updater to steady state
-    sigma, parameters[2], r = helper.find_beta(parameters, sigma, r)
+    # find the correct value for beta
+    parameters[2], sigma, r = helper.find_beta(parameters, sigma, r)
 
     # calculate the energy
     energy[i], descent, acceptance, r = h2_mh.metropolis_hastings(r, parameters, sigma, 1000000)
 
-    print "hallo"
+    print i+1
 
+# fit the morse potential
+popt, pcov = curve_fit(helper.morse, s, energy)
+x = np.linspace(1,2,1000)
+var = np.sqrt(np.diag(pcov))
 
+print "minimum energy: " + "{:.5f}".format(popt[3]) + " +/-" + "{:.5f}".format(var[3])
+print "D: " + "{:.5f}".format(popt[1]) + " +/-" + "{:.5f}".format(var[1])
+print "r0: " + "{:.5f}".format(popt[2]) + " +/-" + "{:.5f}".format(var[2])
+
+# plot the fit and data
 plt.figure()
-plt.plot(s_vector, energy)
+plt.plot(x, helper.morse(x, popt[0], popt[1], popt[2], popt[3]))
+plt.plot(s, energy, 'x')
 plt.show()
+
+

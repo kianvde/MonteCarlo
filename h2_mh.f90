@@ -97,7 +97,7 @@ SUBROUTINE metropolis_hastings(r_in, problem_parameters, sigma, N, energy, desce
         ! one
         p = ((p1L(2) + p1R(2))/(p1L(1) + p1R(1)))* &    ! factor due to electron 1
             ((p2L(2) + p2R(2))/(p2L(1) + p2R(1)))* &    ! factor due to electron 2
-            (p12(2) / p12(1))		                    ! interaction factor
+            (p12(2) / p12(1))                           ! interaction factor
         
         
         ! calculate the local energy
@@ -134,8 +134,7 @@ SUBROUTINE metropolis_hastings(r_in, problem_parameters, sigma, N, energy, desce
     r_out = (/ r1, r2 /)
     
 END SUBROUTINE metropolis_hastings
-
-
+    
 !---subroutine for initializing the random value generator---!
 SUBROUTINE init_rnd()
     implicit none
