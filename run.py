@@ -5,9 +5,9 @@ import helper
 import matplotlib.pyplot as plt
 
 # problem parameters
+s = np.linspace(1,2,50)
 beta = 0.7
 sigma = 0.2
-s = np.linspace(1,2,50)
 
 energy = np.zeros(np.size(s))
 for i,s_i in enumerate(s):
@@ -18,24 +18,25 @@ for i,s_i in enumerate(s):
 
     # initialize fortran random value generator and r
     h2_mh.init_rnd()
-    r = 4.0*np.random.rand(6) - 2.0
+    r = 2*s_i*np.random.rand(6) - s_i
 
     # find the correct value for beta
     parameters[2], sigma, r = helper.find_beta(parameters, sigma, r)
 
+    print parameters[2]
+
     # calculate the energy
     energy[i], descent, acceptance, r = h2_mh.metropolis_hastings(r, parameters, sigma, 1000000)
 
-    print i+1
 
 # fit the morse potential
 popt, pcov = curve_fit(helper.morse, s, energy)
 x = np.linspace(1,2,1000)
 var = np.sqrt(np.diag(pcov))
 
-print "minimum energy: " + "{:.5f}".format(popt[3]) + " +/-" + "{:.5f}".format(var[3])
-print "D: " + "{:.5f}".format(popt[1]) + " +/-" + "{:.5f}".format(var[1])
-print "r0: " + "{:.5f}".format(popt[2]) + " +/-" + "{:.5f}".format(var[2])
+print "minimum energy: " + "{:+.5f}".format(popt[3]) + " +/-" + "{:+.5f}".format(var[3])
+print "D: " + "{:+.5f}".format(popt[1]) + " +/-" + "{:+.5f}".format(var[1])
+print "r0: " + "{:+.5f}".format(popt[2]) + " +/-" + "{:+.5f}".format(var[2])
 
 # plot the fit and data
 plt.figure()

@@ -20,7 +20,7 @@ def find_a(s):
 # returns sigma, beta, r
 def find_beta(parameters, sigma, r):
     # update parameters
-    gamma = 0.05    # damped gradient descent factor
+    gamma = 0.1     # damped gradient descent factor
     delta = 0.05    # acceptance rate update factor
 
     for i in range(500):
@@ -28,7 +28,7 @@ def find_beta(parameters, sigma, r):
         sigma += delta*(acceptance - 0.5)
         parameters[2] -= gamma*descent
 
-    return sigma, parameters[2], r
+    return parameters[2], sigma, r
 
 # function for the Morse potential
 def morse(x, a, D, r0, c):
