@@ -2,7 +2,7 @@ import numpy as np
 import math
 import h2_mh
 
-
+# find a from s using Newton Rhapson
 def find_a(s):
     a = s
     crit = float("Inf")
@@ -17,27 +17,19 @@ def find_a(s):
 
     return a
 
+# find beta using mh algorithm
+# returns sigma, beta, r
+def find_beta(parameters, sigma, r):
 
-def find_steady_state(s,a,beta,r):
-    energy, descent, r = h2_mh.metropolis_hastings(r, [s, a, beta], 1.0, 200000, False)
-    return r
+    # update parameters
+    gamma = 0.05    # damped gradient descent factor
+    delta = 0.05    # acceptance rate update factor
 
-
-def minimize_beta(s,a,beta,eps,r):
-    avg_old = float("Inf")
-    i = 0
-    crit = float("Inf")
-    while crit > (eps / 10.0 / 100.0):
-        b_temp = np.array([0.0])
-        E_temp = np.array([0.0])
-        for i in range(10):
-            energy, descent, r = h2_mh.metropolis_hastings(r, [s, a, beta], 1.0, 50000, True)
-            beta -= 0.1*descent
-            b_temp = np.hstack((b_temp,beta))
-            E_temp = np.hstack((E_temp,energy))
-        crit = abs(np.sum(b_temp[1:])/10.0 - avg_old)
-        avg_old = np.sum(b_temp[1:])/10.0
-    return beta, r
+    for i in range(1000):
+        energy, descent, acceptance, r = h2_mh.metropolis_hastings(r, parameters, sigma, 5000)
+        sigma += delta*(acceptance - 0.5)
+        parameters[2] -= gamma*descent
+    return sigma, parameters[2], r
 
 
 

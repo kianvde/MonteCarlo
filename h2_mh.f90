@@ -10,16 +10,16 @@
 !       b: trial wave function parameter
 ! sigma:                [real]    => standard deviation of update step
 ! N:                    [integer] => number of updates
-! compute:              [boolean] => specify if the energy and the descent factor should be computed
 !
 !
 ! OUTPUT
 ! energy:               [real]    => the averaged local energy
 ! descent:              [real]    => beta update parameter
+! acceptance:           [real]    => acceptance factor  
 ! r_out:                [real(6)] => vector containing r1 and r2 [r1, r2]         
 
-                            !  |------------------input-------------------|  |-------output-------|
-SUBROUTINE metropolis_hastings(r_in, problem_parameters, sigma, N, compute, energy, descent, r_out)
+                            ! |--------------input---------------| |------------output---------------|
+SUBROUTINE metropolis_hastings(r_in, problem_parameters, sigma, N, energy, descent, acceptance, r_out)
     implicit none
 
     ! input/output
@@ -27,8 +27,7 @@ SUBROUTINE metropolis_hastings(r_in, problem_parameters, sigma, N, compute, ener
     real(8), intent(in)  :: problem_parameters(3)
     real(8), intent(in)  :: sigma
     integer, intent(in)  :: N
-    logical, intent(in)  :: compute
-    real(8), intent(out) :: energy, descent
+    real(8), intent(out) :: energy, descent, acceptance
     real(8), intent(out) :: r_out(6)
     
     ! computation variables
@@ -54,6 +53,7 @@ SUBROUTINE metropolis_hastings(r_in, problem_parameters, sigma, N, compute, ener
     PI = 4*atan(1d+0)
     
     ! for loop metropolis-hastings
+    acceptance = 0
     energy = 0
     sd_A_avg = 0
     sd_AE_avg = 0
@@ -92,7 +92,6 @@ SUBROUTINE metropolis_hastings(r_in, problem_parameters, sigma, N, compute, ener
         p2L = exp(-r2L/a)
         p2R = exp(-r2R/a)
         p12 = exp(r12/(2+2*b*r12))
-        ! p12 = (/ exp(r12(1)/(2+2*b*r12(1))), exp(r12(2)/(2+2*b*r12(2))) /)
         
         ! calculate the fraction of the new wave function divided by the old
         ! one
@@ -100,38 +99,36 @@ SUBROUTINE metropolis_hastings(r_in, problem_parameters, sigma, N, compute, ener
             ((p2L(2) + p2R(2))/(p2L(1) + p2R(1)))* &    ! factor due to electron 2
             (p12(2) / p12(1))		                    ! interaction factor
         
-        IF (compute) THEN
+        
+        ! calculate the local energy
+        temp = (p1L(1)*r1Lu+p1R(1)*r1Ru)/(p1L(1)+p1R(1)) - (p2L(1)*r2Lu+p2R(1)*r2Ru)/(p2L(1)+p2R(1))
+        
+        local_energy = - 1/(a**2) + (p1L(1)/r1L(1) + p1R(1)/r1R(1))/(a*(p1L(1)+p1R(1))) + &
+            (p2L(1)/r2L(1) + p2R(1)/r2R(1))/(a*(p2L(1)+p2R(1))) &
+            - 1/r1L(1) - 1/r1R(1) - 1/r2L(1) - 1/r2R(1) + 1/r12(1) + &
+            dot_product(temp, r12u/(2*a*(1+b*r12(1))**2)) &
+            - ((4*b+1)*r12(1)+4)/((4*(1+b*r12(1))**4)*r12(1)) + 1/s
+        energy = energy + local_energy
 
-            ! calculate the local energy
-            temp = (p1L(1)*r1Lu+p1R(1)*r1Ru)/(p1L(1)+p1R(1)) - (p2L(1)*r2Lu+p2R(1)*r2Ru)/(p2L(1)+p2R(1))
-            
-            local_energy = - 1/(a**2) + (p1L(1)/r1L(1) + p1R(1)/r1R(1))/(a*(p1L(1)+p1R(1))) + &
-                (p2L(1)/r2L(1) + p2R(1)/r2R(1))/(a*(p2L(1)+p2R(1))) &
-                - 1/r1L(1) - 1/r1R(1) - 1/r2L(1) - 1/r2R(1) + 1/r12(1) + &
-                dot_product(temp, r12u/(2*a*(1+b*r12(1))**2)) &
-                - ((4*b+1)*r12(1)+4)/((4*(1+b*r12(1))**4)*r12(1)) + 1/s
-            energy = energy + local_energy
-  
-            ! calculate terms for steepest descent method
-            sd_A = -r12(1)**2/(2*(1+b*r12(1))**2)
-            sd_A_avg = sd_A_avg + sd_A
-            sd_AE_avg = sd_AE_avg + sd_A*local_energy
-        END IF
+        ! calculate terms for steepest descent method
+        sd_A = -r12(1)**2/(2*(1+b*r12(1))**2)
+        sd_A_avg = sd_A_avg + sd_A
+        sd_AE_avg = sd_AE_avg + sd_A*local_energy
 
         ! update r1 and r2 according to metropolis hastings algorithm
         IF (p**2 > rnd(7)) THEN
+            acceptance = acceptance + 1
             r1 = r1n
             r2 = r2n
         END IF   
     END DO
     
-    ! compute local energy and steepest descent method factor
-    IF (compute) THEN
-        energy = energy/N
+    ! compute local energy and acceptance
+    energy = energy/N
+    acceptance = acceptance/N
         
-        ! calculate descent for beta update
-        descent = (2d+0/N)*(sd_AE_avg - energy*sd_A_avg)
-    END IF
+    ! calculate descent for beta update
+    descent = (2d+0/N)*(sd_AE_avg - energy*sd_A_avg)
     
     ! calculate r_out
     r_out = (/ r1, r2 /)
