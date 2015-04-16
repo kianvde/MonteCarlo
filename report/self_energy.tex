@@ -1,0 +1,34 @@
+We know that the self energy is given by:
+\begin{align}
+\varepsilon  =  &- \frac{1}{{{a^2}}} + \frac{1}{{a{\phi _1}}}\left[ {\frac{{{\phi _{1L}}}}{{{r_{1L}}}} + \frac{{{\phi _{1R}}}}{{{r_{1R}}}}} \right] + \frac{1}{{a{\phi _2}}}\left[ {\frac{{{\phi _{2L}}}}{{{r_{2L}}}} + \frac{{{\phi _{2R}}}}{{{r_{2R}}}}} \right] + \left( {\frac{{{\phi _{1L}}{{\hat r}_{1L}} + {\phi _{1R}}{{\hat r}_{1R}}}}{{{\phi _1}}} - \frac{{{\phi _{2L}}{{\hat r}_{2L}} + {\phi _{2R}}{{\hat r}_{2R}}}}{{{\phi _2}}}} \right)\left( {\frac{{{{\hat r}_{12}}}}{{2a{\gamma ^2}}}} \right)\nonumber\\&
+ - \frac{{\left( {1 + 4\beta } \right){r_{12}} + 4}}{{4{\gamma ^4}{r_{12}}}} - \frac{1}{{{r_{1L}}}} - \frac{1}{{{r_{1R}}}} - \frac{1}{{{r_{2L}}}} - \frac{1}{{{r_{2R}}}} + \frac{1}{{{r_{12}}}} + \frac{1}{{{r_{LR}}}}
+\end{align}
+Since we do not want this expression to explode, we must have certain conditions on the variational parameters. For example:
+\begin{align}{l}
+\mathop {\lim }\limits_{{r_{1L}} \to 0} \left| \varepsilon  \right| < \infty  &\Rightarrow \frac{1}{{a{\phi _1}}}\left[ {\frac{{{\phi _{1L}}}}{{{r_{1L}}}}} \right] - \frac{1}{{{r_{1L}}}} = 0\nonumber\\& \Rightarrow \frac{{{e^{ - {r_{1L}}/a}}}}{{a\left( {{e^{ - {r_{1L}}/a}} + {e^{ - {r_{1R}}/a}}} \right)}} = 1\nonumber\\&
+ \Rightarrow a = \frac{1}{{1 + {e^{ - \left| {{{\vec r}_L} - {{\vec r}_R}} \right|/a}}}}
+\end{align}
+For $r_{1R}$, etc. we find the same condition. With this condition, we can now eliminate $a$ as a variable from the self energy by solving the above equation.\\
+However, this is easier said than done. The non-linear form of this equation means that it is not possible to solve for a analytically. Therefore, we use Newton-Rhapson to numerically find the value for a for which the above equation holds. The iteration scheme for Newton-Rhapson is given by
+\begin{align}
+{a^{n + 1}} = {a^n} - \frac{{f\left( {{a^n}} \right)}}{{f\left( {{a^n}} \right)}},
+\end{align}
+where $f$ is given by
+\begin{align}
+f\left( a \right) = \frac{1}{{1 + {e^{ - \left| {{{\vec r}_L} - {{\vec r}_R}} \right|/a}}}} - a.
+\end{align}
+We also need the derivative of f
+\begin{align}
+f'\left( a \right) =  - \frac{{\left| {{{\vec r}_L} - {{\vec r}_R}} \right|{e^{ - \left| {{{\vec r}_L} - {{\vec r}_R}} \right|/a}}}}{{{{\left( {a + a{e^{ - \left| {{{\vec r}_L} - {{\vec r}_R}} \right|/a}}} \right)}^2}}} - 1.
+\end{align}
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,182 @@
+\noindent Our goal is to derive the local energy for the hydrogen molecule. We start with the trial wave function
+\begin{align}
+\Psi \left( {{{\vec r}_1},{{\vec r}_2}} \right) = {\phi _1}\left( {{{\vec r}_1}} \right){\phi _2}\left( {{{\vec r}_2}} \right)\psi \left( {{{\vec r}_1},{{\vec r}_2}} \right).
+\end{align}\\
+The trial wave function consists of two single-electron terms (one that only depends on $r_1$, and one that only depends on $r_2$) and an interaction term $\psi$. The single-electron wave functions are given by
+\begin{align}
+{\phi _1}\left( {{{\vec r}_1}} \right) = {e^{ - {{{r_{1L}}} \mathord{\left/
+ {\vphantom {{{r_{1L}}} a}} \right.
+ \kern-\nulldelimiterspace} a}}} + {e^{ - {{{r_{1R}}} \mathord{\left/
+ {\vphantom {{{r_{1R}}} a}} \right.
+ \kern-\nulldelimiterspace} a}}} = {\phi _{1L}} + {\phi _{1R}}\,\,\,\,,\,\,\,\,\,{\phi _2}\left( {{{\vec r}_2}} \right) = {e^{ - {{{r_{2L}}} \mathord{\left/
+ {\vphantom {{{r_{2L}}} a}} \right.
+ \kern-\nulldelimiterspace} a}}} + {e^{ - {{{r_{2R}}} \mathord{\left/
+ {\vphantom {{{r_{2R}}} a}} \right.
+ \kern-\nulldelimiterspace} a}}} = {\phi _{2L}} + {\phi _{2R}},
+ \end{align}\\
+ where we have defined
+ \begin{align}
+{r_{1L}} = \left| {{{\vec r}_1} - {{\vec r}_L}} \right|\,\,\,\,,\,\,\,etc
+ \end{align}\\
+ with $r_L$ the position vector for the left proton, etc. These wave functions correspond to non-interacting electrons orbiting two protons. However, this does not accurately describe our system. We must also add an interaction term:
+ \begin{align}
+ \psi \left( {{{\vec r}_1},{{\vec r}_2}} \right) = {e^{\frac{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}{{\alpha \left( {1 + \beta \left| {{{\vec r}_1} - {{\vec r}_2}} \right|} \right)}}}}
+ \end{align}\\
+ In this term, $\alpha$ and $\beta$ are parameters that we will optimize to find the minimum of the energy through the variational approach.\\
+
+ Now, in order to calculate the energy of the system, we need to write down the Hamiltonian. In this case, the Hamiltonian consists of the Hamiltonian for two single electrons, with two extra terms for electron-electron interaction and proton-proton interaction:
+  \begin{align}
+  \hat H =& {{\hat H}_1} + {{\hat H}_2} + {{\hat H}_{ee}} + {{\hat H}_{pp}}\\
+  \hat H =& \left( { - \frac{1}{2}\nabla _1^2 - \frac{1}{{{r_{1L}}}} - \frac{1}{{{r_{1R}}}}} \right) + \left( { - \frac{1}{2}\nabla _2^2 - \frac{1}{{{r_{2L}}}} - \frac{1}{{{r_{2R}}}}} \right) + \left( {\frac{1}{{{r_{12}}}}} \right) + \left( {\frac{1}{{{r_{LR}}}}} \right)
+  \end{align}\\
+ Introducing some notation gives:
+ \begin{align}
+ V =&  - \frac{1}{{{r_{1L}}}} - \frac{1}{{{r_{1R}}}} - \frac{1}{{{r_{2L}}}} - \frac{1}{{{r_{2R}}}} + \frac{1}{{{r_{12}}}} + \frac{1}{{{r_{LR}}}}\\
+ \hat H =&  - \frac{1}{2}\nabla _1^2 - \frac{1}{2}\nabla _2^2 + V
+ \end{align}\\
+ Now we can use this Hamiltonian to find the local energy we are interested in. To this end, we apply the definition of the local energy:
+ \begin{align}
+ \varepsilon  = \frac{{\hat H\Psi \left( {{{\vec r}_1},{{\vec r}_2}} \right)}}{{\Psi \left( {{{\vec r}_1},{{\vec r}_2}} \right)}} =  - \frac{1}{2}\frac{{\nabla _1^2\Psi \left( {{{\vec r}_1},{{\vec r}_2}} \right) + \nabla _2^2\Psi \left( {{{\vec r}_1},{{\vec r}_2}} \right)}}{{\Psi \left( {{{\vec r}_1},{{\vec r}_2}} \right)}} + V
+ \end{align}\\
+ The challenge now is to compute the second derivatives we need for the local energy. We start by calculating the first derivative to $r_1$:
+ \begin{align}
+ \nabla _1^2\Psi \left( {{{\vec r}_1},{{\vec r}_2}} \right) =& \nabla _1^{} \cdot \left( {\nabla _1^{}\Psi \left( {{{\vec r}_1},{{\vec r}_2}} \right)} \right)\\
+ \nabla _1^{}\Psi \left( {{{\vec r}_1},{{\vec r}_2}} \right) =& \nabla _1^{}\left( {{\phi _1}\left( {{{\vec r}_1}} \right){\phi _2}\left( {{{\vec r}_2}} \right)\psi \left( {{{\vec r}_1},{{\vec r}_2}} \right)} \right)\nonumber\\
+  =& {\phi _2}\left( {{{\vec r}_2}} \right)\psi \left( {{{\vec r}_1},{{\vec r}_2}} \right)\nabla _1^{}{\phi _1}\left( {{{\vec r}_1}} \right) + {\phi _1}\left( {{{\vec r}_1}} \right){\phi _2}\left( {{{\vec r}_2}} \right)\nabla _1^{}\psi \left( {{{\vec r}_1},{{\vec r}_2}} \right)
+ \end{align}\\
+ Tackling this term by term: 
+ \begin{align}
+ \nabla _1^{}{\phi _1}\left( {{{\vec r}_1}} \right) =& \nabla _1^{}\left( {{e^{ - {{{r_{1L}}} \mathord{\left/
+  {\vphantom {{{r_{1L}}} a}} \right.
+  \kern-\nulldelimiterspace} a}}} + {e^{ - {{{r_{1R}}} \mathord{\left/
+  {\vphantom {{{r_{1R}}} a}} \right.
+  \kern-\nulldelimiterspace} a}}}} \right) =  - \frac{1}{a}\left( {{e^{ - {{{r_{1L}}} \mathord{\left/
+  {\vphantom {{{r_{1L}}} a}} \right.
+  \kern-\nulldelimiterspace} a}}}\nabla _1^{}{r_{1L}} + {e^{ - {{{r_{1R}}} \mathord{\left/
+  {\vphantom {{{r_{1R}}} a}} \right.
+  \kern-\nulldelimiterspace} a}}}\nabla _1^{}{r_{1R}}} \right)\nonumber\\ =&  - \frac{1}{a}\left( {{e^{ - {{{r_{1L}}} \mathord{\left/
+  {\vphantom {{{r_{1L}}} a}} \right.
+  \kern-\nulldelimiterspace} a}}}\frac{{{{\vec r}_{1L}}}}{{{r_{1L}}}} + {e^{ - {{{r_{1R}}} \mathord{\left/
+  {\vphantom {{{r_{1R}}} a}} \right.
+  \kern-\nulldelimiterspace} a}}}\frac{{{{\vec r}_{1R}}}}{{{r_{1R}}}}} \right)
+ \end{align}\\
+ We also need the first derivative of the interaction term:
+ \begin{align}
+ &\nabla _1^{}\psi \left( {{{\vec r}_1},{{\vec r}_2}} \right) = \nabla _1^{}\left( {{e^{\frac{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}{{\alpha \left( {1 + \beta \left| {{{\vec r}_1} - {{\vec r}_2}} \right|} \right)}}}}} \right) = {e^{\frac{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}{{\alpha \left( {1 + \beta \left| {{{\vec r}_1} - {{\vec r}_2}} \right|} \right)}}}}\nabla _1^{}\left( {\frac{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}{{\alpha \left( {1 + \beta \left| {{{\vec r}_1} - {{\vec r}_2}} \right|} \right)}}} \right)\nonumber\\
+  &= {e^{\frac{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}{{\alpha \left( {1 + \beta \left| {{{\vec r}_1} - {{\vec r}_2}} \right|} \right)}}}}\left( {\frac{{{{\vec r}_1} - {{\vec r}_2}}}{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}\frac{1}{{\alpha \left( {1 + \beta \left| {{{\vec r}_1} - {{\vec r}_2}} \right|} \right)}} - \left| {{{\vec r}_1} - {{\vec r}_2}} \right|\frac{1}{{{{\left( {\alpha \left( {1 + \beta \left| {{{\vec r}_1} - {{\vec r}_2}} \right|} \right)} \right)}^2}}}\alpha \beta \frac{{{{\vec r}_1} - {{\vec r}_2}}}{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}} \right)\nonumber\\
+ & = {e^{\frac{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}{{\alpha \left( {1 + \beta \left| {{{\vec r}_1} - {{\vec r}_2}} \right|} \right)}}}}\left( {\frac{{{{\vec r}_1} - {{\vec r}_2}}}{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}\frac{1}{{\alpha {{\left( {1 + \beta \left| {{{\vec r}_1} - {{\vec r}_2}} \right|} \right)}^2}}}} \right)
+ \end{align}\\
+To streamline the rest of the derivation somewhat we introduce the following notation:
+\begin{align}
+\gamma  =& 1 + \beta \left| {{{\vec r}_1} - {{\vec r}_2}} \right|\\
+\nabla _1^{}\psi \left( {{{\vec r}_1},{{\vec r}_2}} \right) =&  {e^{\frac{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}{{\alpha \gamma }}}}\left( {\frac{{{{\vec r}_1} - {{\vec r}_2}}}{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}\frac{1}{{\alpha {\gamma ^2}}}} \right)
+\end{align}\\
+Now that we have the first derivatives we can go for the second derivative to $r_1$:
+\begin{align}
+\nabla _1^2\Psi \left( {{{\vec r}_1},{{\vec r}_2}} \right) =& \nabla _1^{} \cdot \left( {\nabla _1^{}\Psi \left( {{{\vec r}_1},{{\vec r}_2}} \right)} \right) = \nabla _1^{}\left( {{\phi _2}\psi \nabla _1^{}{\phi _1} + {\phi _1}{\phi _2}\nabla _1^{}\psi } \right)\nonumber\\
+=& {\phi _2}\left( {\psi \nabla _1^2{\phi _1} + 2\nabla _1^{}\psi \nabla _1^{}{\phi _1} + {\phi _1}\nabla _1^2\psi } \right)
+\end{align}\\
+We see that we need the second derivatives of the individual terms:
+\begin{align}
+\nabla _1^2{\phi _1}\left( {{{\vec r}_1}} \right) =&  - \frac{1}{a}\nabla _1^{}\left( {{e^{ - {{{r_{1L}}} \mathord{\left/
+ {\vphantom {{{r_{1L}}} a}} \right.
+ \kern-\nulldelimiterspace} a}}}\frac{{{{\vec r}_{1L}}}}{{{r_{1L}}}} + {e^{ - {{{r_{1R}}} \mathord{\left/
+ {\vphantom {{{r_{1R}}} a}} \right.
+ \kern-\nulldelimiterspace} a}}}\frac{{{{\vec r}_{1R}}}}{{{r_{1R}}}}} \right)\nonumber\\
+ =& \frac{1}{{{a^2}}}\left[ {{e^{ - {{{r_{1L}}} \mathord{\left/
+ {\vphantom {{{r_{1L}}} a}} \right.
+ \kern-\nulldelimiterspace} a}}}{{\left( {\frac{{{{\vec r}_{1L}}}}{{{r_{1L}}}}} \right)}^2} + {e^{ - {{{r_{1R}}} \mathord{\left/
+ {\vphantom {{{r_{1R}}} a}} \right.
+ \kern-\nulldelimiterspace} a}}}{{\left( {\frac{{{{\vec r}_{1R}}}}{{{r_{1R}}}}} \right)}^2}} \right] - \frac{1}{a}\left[ {{e^{ - {{{r_{1L}}} \mathord{\left/
+ {\vphantom {{{r_{1L}}} a}} \right.
+ \kern-\nulldelimiterspace} a}}}\frac{2}{{{r_{1L}}}} + {e^{ - {{{r_{1R}}} \mathord{\left/
+ {\vphantom {{{r_{1R}}} a}} \right.
+ \kern-\nulldelimiterspace} a}}}\frac{2}{{{r_{1R}}}}} \right]
+ \end{align}\\
+ Using the notation introduced for the trial wave function and rewriting this expression:
+ \begin{align}
+ \nabla _1^2{\phi _1}\left( {{{\vec r}_1}} \right) = \frac{1}{{{a^2}}}\left[ {{e^{ - {{{r_{1L}}} \mathord{\left/
+  {\vphantom {{{r_{1L}}} a}} \right.
+  \kern-\nulldelimiterspace} a}}} + {e^{ - {{{r_{1R}}} \mathord{\left/
+  {\vphantom {{{r_{1R}}} a}} \right.
+  \kern-\nulldelimiterspace} a}}}} \right] - \frac{2}{a}\left[ {\frac{{{e^{ - {{{r_{1L}}} \mathord{\left/
+  {\vphantom {{{r_{1L}}} a}} \right.
+  \kern-\nulldelimiterspace} a}}}}}{{{r_{1L}}}} + \frac{{{e^{ - {{{r_{1R}}} \mathord{\left/
+  {\vphantom {{{r_{1R}}} a}} \right.
+  \kern-\nulldelimiterspace} a}}}}}{{{r_{1R}}}}} \right] = \frac{1}{{{a^2}}}{\phi _1} - \frac{2}{a}\left[ {\frac{{{\phi _{1L}}}}{{{r_{1L}}}} + \frac{{{\phi _{1R}}}}{{{r_{1R}}}}} \right]
+ \end{align}\\
+ We also need the second derivative of the interaction term:
+ \begin{align}
+ \nabla _1^2\psi \left( {{{\vec r}_1},{{\vec r}_2}} \right) =&  \nabla _1^{}\left[ {{e^{\frac{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}{{\alpha \gamma }}}}\left( {\frac{{{{\vec r}_1} - {{\vec r}_2}}}{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}\frac{1}{{\alpha {\gamma ^2}}}} \right)} \right]\\
+  =& \left( {\frac{{{{\vec r}_1} - {{\vec r}_2}}}{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}\frac{1}{{\alpha {\gamma ^2}}}} \right)\nabla _1^{}{e^{\frac{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}{{\alpha \gamma }}}} + {e^{\frac{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}{{\alpha \gamma }}}}\nabla _1^{}\left( {\frac{{{{\vec r}_1} - {{\vec r}_2}}}{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}\frac{1}{{\alpha {\gamma ^2}}}} \right)\\
+  =& {e^{\frac{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}{{\alpha \gamma }}}}{\left( {\frac{{{{\vec r}_1} - {{\vec r}_2}}}{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}\frac{1}{{\alpha {\gamma ^2}}}} \right)^2} + {e^{\frac{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}{{\alpha \gamma }}}}\left( {\frac{2}{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}\frac{1}{{\alpha {\gamma ^2}}} - \frac{{{{\vec r}_1} - {{\vec r}_2}}}{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}\frac{{2\beta }}{{\alpha {\gamma ^3}}}\frac{{{{\vec r}_1} - {{\vec r}_2}}}{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}} \right)\\
+  =& {e^{\frac{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}{{\alpha \gamma }}}}\left[ {{{\left( {\frac{{{{\vec r}_1} - {{\vec r}_2}}}{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}\frac{1}{{\alpha {\gamma ^2}}}} \right)}^2} + \frac{2}{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}\frac{1}{{\alpha {\gamma ^2}}} - \frac{{2\beta }}{{\alpha {\gamma ^3}}}} \right]
+ \end{align}\\
+This looks very ugly, but we can gather all the terms together:
+ \begin{align}
+ \nabla _1^2\psi \left( {{{\vec r}_1},{{\vec r}_2}} \right) =& {e^{\frac{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}{{\alpha \gamma }}}}\left[ {{{\left( {\frac{{{{\vec r}_1} - {{\vec r}_2}}}{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}\frac{1}{{\alpha {\gamma ^2}}}} \right)}^2} + \frac{2}{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}\frac{1}{{\alpha {\gamma ^2}}} - \frac{{2\beta }}{{\alpha {\gamma ^3}}}} \right]\nonumber\\
+  =& {e^{\frac{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}{{\alpha \gamma }}}}\left[ {\frac{1}{{{\alpha ^2}{\gamma ^4}}} + \frac{{2\alpha }}{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}\frac{{{{\left( {1 + \beta \left| {{{\vec r}_1} - {{\vec r}_2}} \right|} \right)}^2}}}{{{\alpha ^2}{\gamma ^4}}} - \frac{{2\alpha \beta \left( {1 + \beta \left| {{{\vec r}_1} - {{\vec r}_2}} \right|} \right)}}{{{\alpha ^2}{\gamma ^4}}}} \right]\nonumber\\
+  =& {e^{\frac{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}{{\alpha \gamma }}}}\left[ {\frac{{1 + {\raise0.7ex\hbox{${2\alpha }$} \!\mathord{\left/
+  {\vphantom {{2\alpha } {\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}}\right.\kern-\nulldelimiterspace}
+ \!\lower0.7ex\hbox{${\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}$}} + 4\alpha \beta  + \alpha {\beta ^2}\left| {{{\vec r}_1} - {{\vec r}_2}} \right| - 2\alpha \beta  - \alpha {\beta ^2}\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}{{{\alpha ^2}{\gamma ^4}}}} \right]\nonumber\\
+  =& {e^{\frac{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}{{\alpha \gamma }}}}\left[ {\frac{{1 + 2\alpha \beta  + {\raise0.7ex\hbox{${2\alpha }$} \!\mathord{\left/
+  {\vphantom {{2\alpha } {\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}}\right.\kern-\nulldelimiterspace}
+ \!\lower0.7ex\hbox{${\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}$}}}}{{{\alpha ^2}{\gamma ^4}}}} \right]
+ \end{align}\\
+This does not look much better, but we can at least write the first term of the local energy with the help of these expressions. We first write down what this first term looks like: 
+\begin{align}
+{\varepsilon _1} =&  - \frac{1}{2}\frac{{\nabla _1^2\Psi \left( {{{\vec r}_1},{{\vec r}_2}} \right)}}{{\Psi \left( {{{\vec r}_1},{{\vec r}_2}} \right)}} =  - \frac{{{\phi _2}\left( {\psi \nabla _1^2{\phi _1} + 2\nabla _1^{}\psi \nabla _1^{}{\phi _1} + {\phi _1}\nabla _1^2\psi } \right)}}{{2{\phi _2}\psi {\phi _1}}}\nonumber\\ =&  - \frac{{\nabla _1^2{\phi _1}}}{{2{\phi _1}}} - \frac{{\nabla _1^{}\psi \nabla _1^{}{\phi _1}}}{{\psi {\phi _1}}} - \frac{{\nabla _1^2\psi }}{{2\psi }}
+\end{align}\\
+
+Filling in everything we've calculated above:
+\begin{align}
+{\varepsilon _1} =&  - \frac{{\nabla _1^2{\phi _1}}}{{2{\phi _1}}} - \frac{{\nabla _1^{}\psi \nabla _1^{}{\phi _1}}}{{\psi {\phi _1}}} - \frac{{\nabla _1^2\psi }}{{2\psi }}\nonumber\\
+ =&  - \frac{1}{{2{a^2}}} + \frac{1}{{a{\phi _1}}}\left[ {\frac{{{\phi _{1L}}}}{{{r_{1L}}}} + \frac{{{\phi _{1R}}}}{{{r_{1R}}}}} \right] + \frac{1}{{a{\phi _1}}}\left( {{\phi _{1L}}\frac{{{{\vec r}_{1L}}}}{{{r_{1L}}}} + {\phi _{1R}}\frac{{{{\vec r}_{1R}}}}{{{r_{1R}}}}} \right)\left( {\frac{{{{\vec r}_1} - {{\vec r}_2}}}{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}\frac{1}{{\alpha {\gamma ^2}}}} \right)\nonumber\\ &- \frac{{1 + 2\alpha \beta  + {\raise0.7ex\hbox{${2\alpha }$} \!\mathord{\left/
+ {\vphantom {{2\alpha } {\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}}\right.\kern-\nulldelimiterspace}
+\!\lower0.7ex\hbox{${\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}$}}}}{{2{\alpha ^2}{\gamma ^4}}}
+\end{align}\\
+
+Now we need to find the second term of the local energy. We first note that the form of $\phi_1$ and $\phi_2$ is very similar. Therefore, we can easily see:
+\begin{align}
+\nabla _2^{}{\phi _2}\left( {{{\vec r}_2}} \right) =&  - \frac{1}{a}\left( {{\phi _{2L}}\frac{{{{\vec r}_{2L}}}}{{{r_{2L}}}} + {\phi _{2R}}\frac{{{{\vec r}_{2R}}}}{{{r_{2R}}}}} \right)\nonumber\\
+\nabla _2^2{\phi _2}\left( {{{\vec r}_2}} \right) =& \frac{1}{{{a^2}}}{\phi _2} - \frac{2}{a}\left[ {\frac{{{\phi _{2L}}}}{{{r_{2L}}}} + \frac{{{\phi _{2R}}}}{{{r_{2R}}}}} \right]
+\end{align}\\
+The interaction term is a little less obvious. However, we can write:
+\begin{align}
+\left| {{{\vec r}_1} - {{\vec r}_2}} \right| = \left| {{{\vec r}_2} - {{\vec r}_1}} \right|
+\end{align}\\
+Using this, we note that the derivative to $r_2$ goes in the exact same way as the derivative to $r_1$:
+\begin{align}
+\nabla _2^{}\psi \left( {{{\vec r}_1},{{\vec r}_2}} \right) =& {e^{\frac{{\left| {{{\vec r}_2} - {{\vec r}_1}} \right|}}{{\alpha \gamma }}}}\left( {\frac{{{{\vec r}_2} - {{\vec r}_1}}}{{\left| {{{\vec r}_2} - {{\vec r}_1}} \right|}}\frac{1}{{\alpha {\gamma ^2}}}} \right)\\
+\nabla _2^2\psi \left( {{{\vec r}_1},{{\vec r}_2}} \right) =& {e^{\frac{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}{{\alpha \gamma }}}}\left[ {\frac{{1 + 2\alpha \beta  + {\raise0.7ex\hbox{${2\alpha }$} \!\mathord{\left/
+ {\vphantom {{2\alpha } {\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}}\right.\kern-\nulldelimiterspace}
+\!\lower0.7ex\hbox{${\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}$}}}}{{{\alpha ^2}{\gamma ^4}}}} \right]
+\end{align}\\
+Note the difference here: for the first derivative to $r_1$ we had terms containing $r_1$ – $r_2$, for the derivative to $r_2$, however, we find terms with $r_2$ – $r_1$.
+With these expressions, we can now find the second term of the local energy:
+\begin{align}
+{\varepsilon _2} =&  - \frac{{\nabla _2^2{\phi _2}}}{{2{\phi _2}}} - \frac{{\nabla _2^{}\psi \nabla _2^{}{\phi _2}}}{{\psi {\phi _2}}} - \frac{{\nabla _2^2\psi }}{{2\psi }}\nonumber\\
+ =&  - \frac{1}{{2{a^2}}} + \frac{1}{{a{\phi _2}}}\left[ {\frac{{{\phi _{2L}}}}{{{r_{2L}}}} + \frac{{{\phi _{2R}}}}{{{r_{2R}}}}} \right] + \frac{1}{{a{\phi _2}}}\left( {{\phi _{2L}}\frac{{{{\vec r}_{2L}}}}{{{r_{2L}}}} + {\phi _{2R}}\frac{{{{\vec r}_{2R}}}}{{{r_{2R}}}}} \right)\left( { - \frac{{{{\vec r}_1} - {{\vec r}_2}}}{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}\frac{1}{{\alpha {\gamma ^2}}}} \right)\nonumber\\ &- \frac{{1 + 2\alpha \beta  + {\raise0.7ex\hbox{${2\alpha }$} \!\mathord{\left/
+ {\vphantom {{2\alpha } {\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}}\right.\kern-\nulldelimiterspace}
+\!\lower0.7ex\hbox{${\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}$}}}}{{2{\alpha ^2}{\gamma ^4}}}
+\end{align}\\
+Putting these two terms together and adding the potential energy, we find:
+\begin{align}
+\varepsilon  =& {\varepsilon _1} + {\varepsilon _2} + V\nonumber\\
+ =&  - \frac{1}{{2{a^2}}} + \frac{1}{{a{\phi _1}}}\left[ {\frac{{{\phi _{1L}}}}{{{r_{1L}}}} + \frac{{{\phi _{1R}}}}{{{r_{1R}}}}} \right] + \frac{1}{{a{\phi _1}}}\left( {{\phi _{1L}}\frac{{{{\vec r}_{1L}}}}{{{r_{1L}}}} + {\phi _{1R}}\frac{{{{\vec r}_{1R}}}}{{{r_{1R}}}}} \right)\left( {\frac{{{{\vec r}_1} - {{\vec r}_2}}}{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}\frac{1}{{\alpha {\gamma ^2}}}} \right) - \frac{{1 + 2\alpha \beta  + {\raise0.7ex\hbox{${2\alpha }$} \!\mathord{\left/
+ {\vphantom {{2\alpha } {\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}}\right.\kern-\nulldelimiterspace}
+\!\lower0.7ex\hbox{${\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}$}}}}{{2{\alpha ^2}{\gamma ^4}}}\nonumber\\
+ &- \frac{1}{{2{a^2}}} + \frac{1}{{a{\phi _2}}}\left[ {\frac{{{\phi _{2L}}}}{{{r_{2L}}}} + \frac{{{\phi _{2R}}}}{{{r_{2R}}}}} \right] + \frac{1}{{a{\phi _2}}}\left( {{\phi _{2L}}\frac{{{{\vec r}_{2L}}}}{{{r_{2L}}}} + {\phi _{2R}}\frac{{{{\vec r}_{2R}}}}{{{r_{2R}}}}} \right)\left( { - \frac{{{{\vec r}_1} - {{\vec r}_2}}}{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}\frac{1}{{\alpha {\gamma ^2}}}} \right) - \frac{{1 + 2\alpha \beta  + {\raise0.7ex\hbox{${2\alpha }$} \!\mathord{\left/
+ {\vphantom {{2\alpha } {\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}}\right.\kern-\nulldelimiterspace}
+\!\lower0.7ex\hbox{${\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}$}}}}{{2{\alpha ^2}{\gamma ^4}}}\nonumber\\
+ &- \frac{1}{{{r_{1L}}}} - \frac{1}{{{r_{1R}}}} - \frac{1}{{{r_{2L}}}} - \frac{1}{{{r_{2R}}}} + \frac{1}{{{r_{12}}}} + \frac{1}{{{r_{LR}}}}
+\end{align}\\
+Finally, we do not want the local energy to blow up if the electrons approach each other. For $r_{12}\rightarrow0$, we only get a converging solution if:
+\begin{align}
+ - \frac{{2\alpha }}{{{\alpha ^2}{r_{12}}}} + \frac{1}{{{r_{12}}}} = 0\,\, \Rightarrow \,\,\alpha  = 2
+\end{align}\\
+Filling in $\alpha=2$ gives our final result for the local energy:
+\begin{align}
+\varepsilon  =&  - \frac{1}{{{a^2}}} + \frac{1}{{a{\phi _1}}}\left[ {\frac{{{\phi _{1L}}}}{{{r_{1L}}}} + \frac{{{\phi _{1R}}}}{{{r_{1R}}}}} \right] + \frac{1}{{a{\phi _2}}}\left[ {\frac{{{\phi _{2L}}}}{{{r_{2L}}}} + \frac{{{\phi _{2R}}}}{{{r_{2R}}}}} \right] + \left( {\frac{{{\phi _{1L}}{{\hat r}_{1L}} + {\phi _{1R}}{{\hat r}_{1R}}}}{{{\phi _1}}} - \frac{{{\phi _{2L}}{{\hat r}_{2L}} + {\phi _{2R}}{{\hat r}_{2R}}}}{{{\phi _2}}}} \right)\left( {\frac{{{{\hat r}_{12}}}}{{2a{\gamma ^2}}}} \right)\nonumber\\
+ &- \frac{{\left( {1 + 4\beta } \right){r_{12}} + 4}}{{4{\gamma ^4}{r_{12}}}} - \frac{1}{{{r_{1L}}}} - \frac{1}{{{r_{1R}}}} - \frac{1}{{{r_{2L}}}} - \frac{1}{{{r_{2R}}}} + \frac{1}{{{r_{12}}}} + \frac{1}{{{r_{LR}}}}
+\end{align}\\

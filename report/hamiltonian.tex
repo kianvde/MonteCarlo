@@ -1,0 +1,62 @@
+Our goal is to find an upper bound for the energy of the ground state of the hydrogen molecule. To do this, we use the variational approach, which states that 
+\begin{align}
+E = \frac{{\left\langle \psi  \right|\hat H\left| \psi  \right\rangle }}{{\left\langle \psi  \right|\left. \psi  \right\rangle }} = \frac{{\int {d{{\vec r}_1}\int {d{{\vec r}_2}} {\psi ^ * }\hat H\psi } }}{{\left\langle \psi  \right|\left. \psi  \right\rangle }} \ge {E_g}.
+\end{align}
+Our goal is now to evaluate this integral with the help of the Monte Carlo method. Before we can do this, however, we need to find the Hamiltonian and the wave function for this problem.\\
+
+We start by writing down the Hamiltonian for the hydrogen molecule. We assume that the protons do not move (Born-Oppenheimer approximation). Then the Hamiltonian consists of two single-electron Hamiltonians and two extra terms to account for electron-electron repulsion and proton-proton repulsion respectively. This gives the following result:
+\begin{align}
+\hat H =& {\hat H_1} + {\hat H_2} + {\hat H_{ee}} + {\hat H_{pp}}\\
+\hat H =& \left( { - \frac{{{\hbar ^2}}}{{2m}}\nabla _1^2 - \frac{{{e^2}}}{{4\pi {\varepsilon _0}}}\frac{1}{{{r_{1L}}}} - \frac{{{e^2}}}{{4\pi {\varepsilon _0}}}\frac{1}{{{r_{1R}}}}} \right) + \left( { - \frac{{{\hbar ^2}}}{{2m}}\nabla _2^2 - \frac{{{e^2}}}{{4\pi {\varepsilon _0}}}\frac{1}{{{r_{2L}}}} - \frac{{{e^2}}}{{4\pi {\varepsilon _0}}}\frac{1}{{{r_{2R}}}}} \right)\nonumber\\
+& + \left( {\frac{{{e^2}}}{{4\pi {\varepsilon _0}}}\frac{1}{{{r_{12}}}}} \right) + \left( {\frac{{{e^2}}}{{4\pi {\varepsilon _0}}}\frac{1}{{{r_{LR}}}}} \right).
+\end{align}\\
+In this equation we have defined ${r_{1L}} = \left| {{{\vec r}_1} - {{\vec r}_L}} \right|$, etc., where $r_L$ is the position vector of the left-most proton. To simplify the units somewhat, we introduce atomic units, where lengths are given in terms of the Bohr radius and energies are given in terms of twice the ionization energy of hydrogen:
+\begin{align}
+{a_0} =& \frac{{4\pi {\varepsilon _0}{\hbar ^2}}}{{m{e^2}}} = 0.529\mathring{A}\\
+E =& 2 \cdot \frac{{{e^2}}}{{4\pi {\varepsilon _0}{a_0}}} = 2 \cdot \left( { - 13.6eV} \right) =  - 27.2eV
+\end{align}\\
+In these units, we can write the Hamiltonian as follows \cite{MSU_paper}:
+\begin{align}
+\hat H =  - \frac{1}{2}\left( {\nabla _1^2 + \nabla _2^2} \right) - \frac{1}{{{r_{1L}}}} - \frac{1}{{{r_{1R}}}} - \frac{1}{{{r_{2L}}}} - \frac{1}{{{r_{2R}}}} + \frac{1}{{{r_{12}}}} + \frac{1}{{{r_{LR}}}}
+\end{align}
+Now, we can choose our axes in such a way that the two protons are located symmetrically along the x-axis at $-s/2$ and $+s/2$, with $s$ the separation between the protons. In that case, we can write the distances between an electron and a proton as
+\begin{align}
+{r_{1L}} =& \left| {{{\vec r}_1} + \frac{s}{2}\hat x} \right|\\{r_{1R}} =& \left| {{{\vec r}_1} - \frac{s}{2}\hat x} \right|
+\end{align}
+Now that we have the Hamiltonian, we can now try to write down a trial wave function to use for variational calculus. Luckily, this has already been done, so we can immediately write down the final result\cite{MSU_paper}:
+\begin{align}
+\Psi \left( {{{\vec r}_1},{{\vec r}_2}} \right) = {\phi _1}\left( {{{\vec r}_1}} \right){\phi _2}\left( {{{\vec r}_2}} \right)\psi \left( {{{\vec r}_1},{{\vec r}_2}} \right)
+\end{align}
+The trial wave function consists of two single-electron terms (one that only depends on $r_1$, and one that only depends on $r_2$) and an interaction term $\psi$. The single-electron wave functions are given by
+\begin{align}
+{\phi _1}\left( {{{\vec r}_1}} \right) =& {e^{ - {{{r_{1L}}} \mathord{\left/
+ {\vphantom {{{r_{1L}}} a}} \right.
+ \kern-\nulldelimiterspace} a}}} + {e^{ - {{{r_{1R}}} \mathord{\left/
+ {\vphantom {{{r_{1R}}} a}} \right.
+ \kern-\nulldelimiterspace} a}}} = {\phi _{1L}} + {\phi _{1R}},\\
+ {\phi _2}\left( {{{\vec r}_2}} \right) =& {e^{ - {{{r_{2L}}} \mathord{\left/
+ {\vphantom {{{r_{2L}}} a}} \right.
+ \kern-\nulldelimiterspace} a}}} + {e^{ - {{{r_{2R}}} \mathord{\left/
+ {\vphantom {{{r_{2R}}} a}} \right.
+ \kern-\nulldelimiterspace} a}}} = {\phi _{2L}} + {\phi _{2R}}.
+\end{align}
+These wave functions correspond to two non-interacting electrons orbiting two protons. However, this does not accurately describe our system. We must also add an interaction term
+\begin{align}
+\psi \left( {{{\vec r}_1},{{\vec r}_2}} \right) = {e^{\frac{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}{{\alpha \left( {1 + \beta \left| {{{\vec r}_1} - {{\vec r}_2}} \right|} \right)}}}}
+\end{align}
+In this term, $\alpha$ and $\beta$ are parameters that we will optimize to find the minimum of the energy through the variational approach.\\
+
+Now we re-examine the integral that we want to evaluate in the variational approach
+\begin{align}
+E = \frac{{\int {d{{\vec r}_1}\int {d{{\vec r}_2}} {\psi ^ * }\hat H\psi } }}{{\left\langle \psi  \right|\left. \psi  \right\rangle }} = \int {d{{\vec r}_1}\int {d{{\vec r}_2}} \frac{{{\psi ^ * }\psi }}{{\left\langle \psi  \right|\left. \psi  \right\rangle }} \cdot \frac{{\hat H\psi }}{\psi }}
+\label{eq:var_int}
+\end{align}
+We define the local energy $\epsilon$ and the weight $\omega$ as
+\begin{align}
+\varepsilon \left( {{{\vec r}_1},{{\vec r}_2},s} \right) =& \frac{{\hat H\psi }}{\psi },\\
+\omega \left( {{{\vec r}_1},{{\vec r}_2},s} \right) =& \frac{{{{\left| \psi  \right|}^2}}}{{\left\langle \psi  \right|\left. \psi  \right\rangle }}.
+\end{align}
+Then we can write the integral of Equation \ref{eq:var_int} as 
+\begin{align}
+E = \int {d{{\vec r}_1}\int {d{{\vec r}_2}} \omega \left( {{{\vec r}_1},{{\vec r}_2},s} \right)\varepsilon \left( {{{\vec r}_1},{{\vec r}_2},s} \right)}.
+\end{align}
