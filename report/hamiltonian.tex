@@ -1,11 +1,16 @@
 Our goal is to find an upper bound for the energy of the ground state of the hydrogen molecule. To do this, we use the variational approach, which states that 
 \begin{align}
 E = \frac{{\left\langle \psi  \right|\hat H\left| \psi  \right\rangle }}{{\left\langle \psi  \right|\left. \psi  \right\rangle }} = \frac{{\int {d{{\vec r}_1}\int {d{{\vec r}_2}} {\psi ^ * }\hat H\psi } }}{{\left\langle \psi  \right|\left. \psi  \right\rangle }} \ge {E_g}.
+\label{eq:main}
 \end{align}
-Our goal is now to evaluate this integral with the help of the Monte Carlo method. Before we can do this, however, we need to find the Hamiltonian and the wave function for this problem.\\
-
+Our goal is now to evaluate this integral with the help of the Monte Carlo method. 
+\subsection{Variational (Quantum) Monte Carlo}
+\input{montecarlo.tex}\\
+\subsubsection{Metropolis-Hastings}
+\input{metropolis.tex}
+\subsection{Hamiltonian of the hydrogen molecule}
 We start by writing down the Hamiltonian for the hydrogen molecule. We assume that the protons do not move (Born-Oppenheimer approximation). Then the Hamiltonian consists of two single-electron Hamiltonians and two extra terms to account for electron-electron repulsion and proton-proton repulsion respectively. This gives the following result:
-\begin{align}
+\begin{align}	   
 \hat H =& {\hat H_1} + {\hat H_2} + {\hat H_{ee}} + {\hat H_{pp}}\\
 \hat H =& \left( { - \frac{{{\hbar ^2}}}{{2m}}\nabla _1^2 - \frac{{{e^2}}}{{4\pi {\varepsilon _0}}}\frac{1}{{{r_{1L}}}} - \frac{{{e^2}}}{{4\pi {\varepsilon _0}}}\frac{1}{{{r_{1R}}}}} \right) + \left( { - \frac{{{\hbar ^2}}}{{2m}}\nabla _2^2 - \frac{{{e^2}}}{{4\pi {\varepsilon _0}}}\frac{1}{{{r_{2L}}}} - \frac{{{e^2}}}{{4\pi {\varepsilon _0}}}\frac{1}{{{r_{2R}}}}} \right)\nonumber\\
 & + \left( {\frac{{{e^2}}}{{4\pi {\varepsilon _0}}}\frac{1}{{{r_{12}}}}} \right) + \left( {\frac{{{e^2}}}{{4\pi {\varepsilon _0}}}\frac{1}{{{r_{LR}}}}} \right).
@@ -45,11 +50,11 @@ These wave functions correspond to two non-interacting electrons orbiting two pr
 \psi \left( {{{\vec r}_1},{{\vec r}_2}} \right) = {e^{\frac{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}{{\alpha \left( {1 + \beta \left| {{{\vec r}_1} - {{\vec r}_2}} \right|} \right)}}}}
 \end{align}
 In this term, $\alpha$ and $\beta$ are parameters that we will optimize to find the minimum of the energy through the variational approach.\\
-
-Now we re-examine the integral that we want to evaluate in the variational approach
+\subsection{Local energy}
+Now we re-examine the integral that we want to evaluate (Equation \ref{eq:main}) in the variational approach, which is
 \begin{align}
 E = \frac{{\int {d{{\vec r}_1}\int {d{{\vec r}_2}} {\psi ^ * }\hat H\psi } }}{{\left\langle \psi  \right|\left. \psi  \right\rangle }} = \int {d{{\vec r}_1}\int {d{{\vec r}_2}} \frac{{{\psi ^ * }\psi }}{{\left\langle \psi  \right|\left. \psi  \right\rangle }} \cdot \frac{{\hat H\psi }}{\psi }}
-\label{eq:var_int}
+\label{eq:var_int}.
 \end{align}
 We define the local energy $\epsilon$ and the weight $\omega$ as
 \begin{align}
@@ -60,3 +65,29 @@ Then we can write the integral of Equation \ref{eq:var_int} as
 \begin{align}
 E = \int {d{{\vec r}_1}\int {d{{\vec r}_2}} \omega \left( {{{\vec r}_1},{{\vec r}_2},s} \right)\varepsilon \left( {{{\vec r}_1},{{\vec r}_2},s} \right)}.
 \end{align}
+Our final step is to write down the local energy of the system. The derivation of the local energy is a bit of work (see \cite{MSU_paper} or appendix A), but eventually one can find as final result
+\begin{align}
+\varepsilon  =&  - \frac{1}{{{a^2}}} + \frac{1}{{a{\phi _1}}}\left[ {\frac{{{\phi _{1L}}}}{{{r_{1L}}}} + \frac{{{\phi _{1R}}}}{{{r_{1R}}}}} \right] + \frac{1}{{a{\phi _2}}}\left[ {\frac{{{\phi _{2L}}}}{{{r_{2L}}}} + \frac{{{\phi _{2R}}}}{{{r_{2R}}}}} \right] + \left( {\frac{{{\phi _{1L}}{{\hat r}_{1L}} + {\phi _{1R}}{{\hat r}_{1R}}}}{{{\phi _1}}} - \frac{{{\phi _{2L}}{{\hat r}_{2L}} + {\phi _{2R}}{{\hat r}_{2R}}}}{{{\phi _2}}}} \right)\left( {\frac{{{{\hat r}_{12}}}}{{2a{\gamma ^2}}}} \right)\nonumber\\
+ &- \frac{{\left( {1 + 4\beta } \right){r_{12}} + 4}}{{4{\gamma ^4}{r_{12}}}} - \frac{1}{{{r_{1L}}}} - \frac{1}{{{r_{1R}}}} - \frac{1}{{{r_{2L}}}} - \frac{1}{{{r_{2R}}}} + \frac{1}{{{r_{12}}}} + \frac{1}{{{r_{LR}}}}.
+\end{align}
+Now, it is important to note that this result is not always bounded. Since we do not want a solution that blows up, we can derive a set of conditions to keep the solution bounded. While deriving the local energy, we have already found one condition for the case $r_{12}\rightarrow0$, namely $\alpha=0$.
+We also have a condition for the case $r_{1L}\rightarrow0$:
+\begin{align}
+\mathop {\lim }\limits_{{r_{1L}} \to 0} \left| \varepsilon  \right| < \infty  &\Rightarrow \frac{1}{{a{\phi _1}}}\left[ {\frac{{{\phi _{1L}}}}{{{r_{1L}}}}} \right] - \frac{1}{{{r_{1L}}}} = 0\nonumber\\& \Rightarrow \frac{{{e^{ - {r_{1L}}/a}}}}{{a\left( {{e^{ - {r_{1L}}/a}} + {e^{ - {r_{1R}}/a}}} \right)}} = 1\nonumber\\&
+ \Rightarrow a = \frac{1}{{1 + {e^{ - \left| {{{\vec r}_L} - {{\vec r}_R}} \right|/a}}}}
+\end{align}
+The other possibilities ($r_{1R}\rightarrow0$, etc) give the same condition, which is called the Coulomb cusp condition. With this condition, we can now eliminate $a$ as a variable from the local energy by solving the above equation.
+However, this is easier said than done. The non-linear form of this equation means that it is not possible to solve for a analytically. Therefore, we use Newton-Rhapson to numerically find the value for a for which the above equation holds.
+\noindent The iteration scheme for Newton-Rhapson is given by
+\begin{align}
+{a^{n + 1}} = {a^n} - \frac{{f\left( {{a^n}} \right)}}{{f'\left( {{a^n}} \right)}},
+\end{align}
+where $f$ is given by
+\begin{align}
+f'\left( a \right) = \frac{1}{{1 + {e^{ - s/a}}}} - a.
+\end{align}
+We also need the derivative of f, which is
+\begin{align}
+f'\left( a \right) =  - \frac{{s{e^{ - s/a}}}}{{{{\left( {a + a{e^{ - s/a}}} \right)}^2}}} - 1.
+\end{align}
+Now we can use the above scheme to find the value of $a$ for a given $s$. Therefore, since we want to know the minimum of the local energy for every $s$, we only need to find one parameter, namely $\beta$. This parameter will now be found using the Monte Carlo method. 
