@@ -10,7 +10,7 @@ def find_a(s):
     while True:
         f = 1.0/(1.0 + math.exp(-s/a)) - a
 
-        f_prime = -s*math.exp(-s/a)/(a*math.exp(-s/a))**2 - 1.0
+        f_prime = -s*math.exp(-s/a)/(a + a*math.exp(-s/a))**2 - 1.0
         a -= f / f_prime
 
         if abs(f / f_prime) < 10**-10:
