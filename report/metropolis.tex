@@ -1,14 +1,14 @@
-To sample from the probability distribution (${p \propto |{\phi _{tr}}{|^2}}$) needed to calculate the integral we use the Metropolis-Hastings algorithm, which is an Markov chain Monte Carlo based method. The main advantage of this method is that we do not have to normalize the wavefunction as this algorithm draws from a valid (normalized) probability distribution proportional to the function supplied (in our case ${|{\phi _{tr}}{|^2}}$). The general algorithm as implemented in our code can be stated as:
+To sample from the probability distribution (${p \propto |{\psi _{tr}}{|^2}}$) needed to calculate the integral we use the Metropolis-Hastings algorithm, which is a Markov chain Monte Carlo based method. The main advantage of this method is that we do not have to normalize the wavefunction as this algorithm draws from a valid (normalized) probability distribution proportional to the function supplied (in our case ${|{\psi _{tr}}{|^2}}$). The general algorithm as implemented in our code can be stated as:
 \begin{enumerate}
 \item randomly initiate the values for ${\overrightarrow {{r_1}} }$ and ${\overrightarrow {{r_2}} }$ 
 \item  propose new ${\overrightarrow {{r_1}} }$ and ${\overrightarrow {{r_2}} }$ by stepping both vectors in a random direction where the step size is drawn from a normal distribution
-\item calculate the acceptance ratio: $|{\phi _{tr}}|_{new}^2/|{\phi _{tr}}{|^2}$
+\item calculate the acceptance ratio: $|{\psi _{tr}}|_{new}^2/|{\psi _{tr}}{|^2}$
 \item if the ratio is bigger than one accept the new coordinates, if the ratio is smaller than one accept with probability given by the ratio
 \end{enumerate}
-For the convergence of this algorithm we will have make smart decisions for the step size used in  step two. It is important to not have the step size too small as then the coordinate space will be traced out slowly. The same thing will happen if the step size is too big because then the acceptance rate will be low. In our code the standard deviation for the step size is updated according to
+For the convergence of this algorithm we will have to make smart decisions for the step size used in  step two. It is important to not have the step size too small as then the coordinate space will be traced out slowly. The same thing will happen if the step size is too big because then the acceptance rate will be low. In our code the standard deviation for the step size is updated according to
 \begin{align}
 \sigma  = \sigma  + \delta  (A - 0.5),
 \end{align}
-A is the average acceptance rate and $\delta$ is a factor between zero and one. This will push the acceptance rate towards 50\% ensuring fast convergence of the algorithm.
+A is the average acceptance rate and $\delta$ is a factor between zero and one, in our case we have used $\delta=0.05$. This will push the acceptance rate towards 50\% ensuring fast convergence of the algorithm.
 
 

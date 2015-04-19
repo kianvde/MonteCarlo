@@ -1,0 +1,10 @@
+After setting s the only free wave function parameter left is $\beta$, as explained above. To minimize the energy for beta a damped steepest descent scheme is used. In this scheme $\beta$ is updated according to
+\begin{align}
+\beta  &= \beta  - \gamma \frac{{d\left\langle E \right\rangle }}{{d\beta }},\\
+\frac{{d\left\langle E \right\rangle }}{{d\beta }} &= 2\left[ {\left\langle {{E_L}\frac{{d\ln ({\psi _{tr}})}}{{d\beta }}} \right\rangle  + \left\langle {{E_L}} \right\rangle \left\langle {\frac{{d\ln ({\psi _{tr}})}}{{d\beta }}} \right\rangle } \right],
+\end{align}
+where we have used $\gamma=0.1$. For our trial wave function only the interaction term depends on $\beta$ so we have
+\begin{align}
+\frac{{d\ln ({\psi _{tr}})}}{{d\beta }} =  - \frac{{r_{12}^2}}{{2(1 + \beta {r_{12}})}}.
+\end{align}
+Now $\beta$ and also the acceptance rate can be updated after every M iterations until the local energy converges to its minimum.	

@@ -1,6 +1,6 @@
 Our goal is to find an upper bound for the energy of the ground state of the hydrogen molecule. To do this, we use the variational approach, which states that 
 \begin{align}
-E = \frac{{\left\langle \psi  \right|\hat H\left| \psi  \right\rangle }}{{\left\langle \psi  \right|\left. \psi  \right\rangle }} = \frac{{\int {d{{\vec r}_1}\int {d{{\vec r}_2}} {\psi ^ * }\hat H\psi } }}{{\left\langle \psi  \right|\left. \psi  \right\rangle }} \ge {E_g}.
+E = \frac{{\left\langle \psi_{tr}  \right|\hat H\left| \psi_{tr}  \right\rangle }}{{\left\langle \psi_{tr}  \right|\left. \psi_{tr}  \right\rangle }} = \frac{{\int {d{{\vec r}_1}\int {d{{\vec r}_2}} {\psi_{tr} ^ * }\hat H\psi_{tr} } }}{{\left\langle \psi_{tr}  \right|\left. \psi_{tr}  \right\rangle }} \ge {E_g}.
 \label{eq:main}
 \end{align}
 Our goal is now to evaluate this integral with the help of the Monte Carlo method. 
@@ -9,7 +9,7 @@ Our goal is now to evaluate this integral with the help of the Monte Carlo metho
 \subsubsection{Metropolis-Hastings}
 \input{metropolis.tex}
 \subsection{Hamiltonian of the hydrogen molecule}
-We start by writing down the Hamiltonian for the hydrogen molecule. We assume that the protons do not move (Born-Oppenheimer approximation). Then the Hamiltonian consists of two single-electron Hamiltonians and two extra terms to account for electron-electron repulsion and proton-proton repulsion respectively. This gives the following result:
+Before we use this method, however, we have to rewrite Equation~\ref{eq:main} somewhat. We start by writing down the Hamiltonian for the hydrogen molecule. We assume that the protons do not move (Born-Oppenheimer approximation). Then the Hamiltonian consists of two single-electron Hamiltonians and two extra terms to account for electron-electron repulsion and proton-proton repulsion respectively. This gives the following result:
 \begin{align}	   
 \hat H =& {\hat H_1} + {\hat H_2} + {\hat H_{ee}} + {\hat H_{pp}}\\
 \hat H =& \left( { - \frac{{{\hbar ^2}}}{{2m}}\nabla _1^2 - \frac{{{e^2}}}{{4\pi {\varepsilon _0}}}\frac{1}{{{r_{1L}}}} - \frac{{{e^2}}}{{4\pi {\varepsilon _0}}}\frac{1}{{{r_{1R}}}}} \right) + \left( { - \frac{{{\hbar ^2}}}{{2m}}\nabla _2^2 - \frac{{{e^2}}}{{4\pi {\varepsilon _0}}}\frac{1}{{{r_{2L}}}} - \frac{{{e^2}}}{{4\pi {\varepsilon _0}}}\frac{1}{{{r_{2R}}}}} \right)\nonumber\\
@@ -30,9 +30,9 @@ Now, we can choose our axes in such a way that the two protons are located symme
 \end{align}
 Now that we have the Hamiltonian, we can now try to write down a trial wave function to use for variational calculus. Luckily, this has already been done, so we can immediately write down the final result\cite{MSU_paper}:
 \begin{align}
-\Psi \left( {{{\vec r}_1},{{\vec r}_2}} \right) = {\phi _1}\left( {{{\vec r}_1}} \right){\phi _2}\left( {{{\vec r}_2}} \right)\psi \left( {{{\vec r}_1},{{\vec r}_2}} \right)
+\Psi \left( {{{\vec r}_1},{{\vec r}_2}} \right) = {\phi _1}\left( {{{\vec r}_1}} \right){\phi _2}\left( {{{\vec r}_2}} \right)\psi_{tr} \left( {{{\vec r}_1},{{\vec r}_2}} \right)
 \end{align}
-The trial wave function consists of two single-electron terms (one that only depends on $r_1$, and one that only depends on $r_2$) and an interaction term $\psi$. The single-electron wave functions are given by
+The trial wave function consists of two single-electron terms (one that only depends on $r_1$, and one that only depends on $r_2$) and an interaction term $\psi_{tr}$. The single-electron wave functions are given by
 \begin{align}
 {\phi _1}\left( {{{\vec r}_1}} \right) =& {e^{ - {{{r_{1L}}} \mathord{\left/
  {\vphantom {{{r_{1L}}} a}} \right.
@@ -47,19 +47,20 @@ The trial wave function consists of two single-electron terms (one that only dep
 \end{align}
 These wave functions correspond to two non-interacting electrons orbiting two protons. However, this does not accurately describe our system. We must also add an interaction term
 \begin{align}
-\psi \left( {{{\vec r}_1},{{\vec r}_2}} \right) = {e^{\frac{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}{{\alpha \left( {1 + \beta \left| {{{\vec r}_1} - {{\vec r}_2}} \right|} \right)}}}}
+\psi_{tr} \left( {{{\vec r}_1},{{\vec r}_2}} \right) = {e^{\frac{{\left| {{{\vec r}_1} - {{\vec r}_2}} \right|}}{{\alpha \left( {1 + \beta \left| {{{\vec r}_1} - {{\vec r}_2}} \right|} \right)}}}}
 \end{align}
 In this term, $\alpha$ and $\beta$ are parameters that we will optimize to find the minimum of the energy through the variational approach.\\
+\newpage
 \subsection{Local energy}
 Now we re-examine the integral that we want to evaluate (Equation \ref{eq:main}) in the variational approach, which is
 \begin{align}
-E = \frac{{\int {d{{\vec r}_1}\int {d{{\vec r}_2}} {\psi ^ * }\hat H\psi } }}{{\left\langle \psi  \right|\left. \psi  \right\rangle }} = \int {d{{\vec r}_1}\int {d{{\vec r}_2}} \frac{{{\psi ^ * }\psi }}{{\left\langle \psi  \right|\left. \psi  \right\rangle }} \cdot \frac{{\hat H\psi }}{\psi }}
+E = \frac{{\int {d{{\vec r}_1}\int {d{{\vec r}_2}} {\psi_{tr} ^ * }\hat H\psi_{tr} } }}{{\left\langle \psi_{tr}  \right|\left. \psi_{tr}  \right\rangle }} = \int {d{{\vec r}_1}\int {d{{\vec r}_2}} \frac{{{\psi_{tr} ^ * }\psi_{tr} }}{{\left\langle \psi_{tr}  \right|\left. \psi_{tr}  \right\rangle }} \cdot \frac{{\hat H\psi_{tr} }}{\psi_{tr} }}
 \label{eq:var_int}.
 \end{align}
 We define the local energy $\epsilon$ and the weight $\omega$ as
 \begin{align}
-\varepsilon \left( {{{\vec r}_1},{{\vec r}_2},s} \right) =& \frac{{\hat H\psi }}{\psi },\\
-\omega \left( {{{\vec r}_1},{{\vec r}_2},s} \right) =& \frac{{{{\left| \psi  \right|}^2}}}{{\left\langle \psi  \right|\left. \psi  \right\rangle }}.
+\varepsilon \left( {{{\vec r}_1},{{\vec r}_2},s} \right) =& \frac{{\hat H\psi_{tr} }}{\psi_{tr} },\\
+\omega \left( {{{\vec r}_1},{{\vec r}_2},s} \right) =& \frac{{{{\left| \psi_{tr}  \right|}^2}}}{{\left\langle \psi_{tr}  \right|\left. \psi_{tr}  \right\rangle }}.
 \end{align}
 Then we can write the integral of Equation \ref{eq:var_int} as 
 \begin{align}
@@ -74,7 +75,7 @@ Now, it is important to note that this result is not always bounded. Since we do
 We also have a condition for the case $r_{1L}\rightarrow0$:
 \begin{align}
 \mathop {\lim }\limits_{{r_{1L}} \to 0} \left| \varepsilon  \right| < \infty  &\Rightarrow \frac{1}{{a{\phi _1}}}\left[ {\frac{{{\phi _{1L}}}}{{{r_{1L}}}}} \right] - \frac{1}{{{r_{1L}}}} = 0\nonumber\\& \Rightarrow \frac{{{e^{ - {r_{1L}}/a}}}}{{a\left( {{e^{ - {r_{1L}}/a}} + {e^{ - {r_{1R}}/a}}} \right)}} = 1\nonumber\\&
- \Rightarrow a = \frac{1}{{1 + {e^{ - \left| {{{\vec r}_L} - {{\vec r}_R}} \right|/a}}}}
+ \Rightarrow a = \frac{1}{{1 + {e^{ - \left| {{{\vec r}_L} - {{\vec r}_R}} \right|/a}}}}.
 \end{align}
 The other possibilities ($r_{1R}\rightarrow0$, etc) give the same condition, which is called the Coulomb cusp condition. With this condition, we can now eliminate $a$ as a variable from the local energy by solving the above equation.
 However, this is easier said than done. The non-linear form of this equation means that it is not possible to solve for a analytically. Therefore, we use Newton-Rhapson to numerically find the value for a for which the above equation holds.

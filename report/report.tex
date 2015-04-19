@@ -12,12 +12,10 @@
 \usepackage{subcaption}
 \usepackage{float}
 \usepackage{listings}
+\usepackage{hyperref}
 \bibliographystyle{plain}
 \begin{document}
-
-\title{Heat problem in a toroidal object}
-\author{P. Hansler 4009665, K. van der Enden 4037804}
-\maketitle
+\input{titlepage.tex}
 \newpage
 \tableofcontents
 \newpage
@@ -37,10 +35,11 @@
 %\section{Reducing parameters}
 %\section{Results}
 \input{hamiltonian.tex}\\
-
 \newpage
+\subsection{Steepest descent scheme}
+\input{steepest_descent.tex}
 \section{Results}
-
+\input{results.tex}
 
 
 
@@ -48,12 +47,17 @@
 \newpage
 %\input{self_energy.tex}
 \newpage
-%\input{appendix.tex}
+%
 \newpage
 %\input{metropolis.tex}
 \newpage
 %\input{hamiltonian.tex}\\
 
 %\input{montecarlo.tex}
+\bibliography{bib}
+\newpage
+\section*{Appendix A}
+\appendix
+\input{appendix.tex}
 \end{document}
 
